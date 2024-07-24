@@ -20,3 +20,11 @@
 # Go workspace file
 go.work
 go.work.sum
+
+build/
+src/client/TimeManagement/.vs/
+src/client/TimeManagement/bin/
+src/client/TimeManagement/obj/
+src/client/Updater/.vs/
+src/client/Updater/bin/
+src/client/Updater/obj/
