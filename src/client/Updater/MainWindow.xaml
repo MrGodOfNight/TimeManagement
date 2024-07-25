@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Updater"
         mc:Ignorable="d"
-            Title="updater" Height="327" Width="659">
+            Title="Updater" Height="327" Width="659">
     <Window.Resources>
         <local:BoolToDownloadingStringConverter x:Key="BoolToDownloadingStringConverter" />
     </Window.Resources>
@@ -34,7 +34,7 @@
         </Grid.RowDefinitions>
 
         <TextBlock TextWrapping="Wrap" FontSize="20" Foreground="Red" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">TimeManagement updater</TextBlock>
-        <ListBox x:Name="fileListBox" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="2">
+        <ListBox x:Name="fileListBox" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="2" Margin="20 0">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -48,7 +48,7 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <ProgressBar x:Name="progressBar" Minimum="0" Maximum="100" Width="639" Height="15" Grid.Row="3" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <ProgressBar x:Name="progressBar" Minimum="0" Maximum="100"  Height="15" Grid.Row="3" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="20 0"/>
         <Button x:Name="start" Width="124" Height="30" Grid.Column="0" Grid.Row="4" Content="Start" Background="#FF66BF00" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Click="start_Click"/>
         <Button x:Name="cancel" Width="124" Height="30" Grid.Column="2" Grid.Row="4" Content="Exit" Background="#FFD80404" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Click="cancel_Click"/>
     </Grid>

@@ -1,10 +1,15 @@
 package main
 
-import "fmt"
+import (
+	"TimeManagement/src/server/route"
+	"fmt"
+	"net/http"
+)
 
 func main() {
-	fmt.Println("Hello Go!")
-	fmt.Println("Hello Golang!")
-	fmt.Println("Hello Go!")
-	fmt.Scanln()
+	http.HandleFunc("/", route.Handler)
+	fmt.Println("Starting server at port 8080")
+	if err := http.ListenAndServe(":8080", nil); err != nil {
+		fmt.Println("Error starting server:", err)
+	}
 }
