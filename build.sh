@@ -13,6 +13,7 @@ echo "Create the build folder."
 echo "Building server..."
 BUILD_CMD="go build -o ./build/server/ ./src/server"
 $BUILD_CMD
+cp "src/server/.env" "build/server"
 
 # Build the client
 echo "Building client..."

@@ -28,3 +28,4 @@ src/client/TimeManagement/obj/
 src/client/Updater/.vs/
 src/client/Updater/bin/
 src/client/Updater/obj/
+**/.env
