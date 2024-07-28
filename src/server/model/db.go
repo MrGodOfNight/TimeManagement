@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"log"
 	"os"
+
+	_ "github.com/lib/pq"
 )
 
 // Global variable for database connection
@@ -12,7 +14,14 @@ var db *sql.DB
 // Function for connecting to database
 func ConnectDB() {
 	var err error
-	db, err = sql.Open("pgx", os.Getenv("DATABASE_URL"))
+
+	// Get database URL from environment variable
+	connStr := os.Getenv("DATABASE_URL")
+	if connStr == "" {
+		log.Fatal("DATABASE_URL is not set")
+	}
+
+	db, err = sql.Open("postgres", connStr)
 	if err != nil {
 		log.Fatal(err)
 	}

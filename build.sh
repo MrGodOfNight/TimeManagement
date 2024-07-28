@@ -17,21 +17,6 @@ cp "src/server/.env" "build/server"
 
 # Build the client
 echo "Building client..."
-
-echo "Building updater..."
-# Path to updater project
-PROJECT_PATH="./src/client/Updater/Updater.csproj"
-
-# Restore dependencies
-echo "Restoring dependencies..."
-dotnet restore $PROJECT_PATH
-
-# Build the project
-echo "Building project..."
-dotnet build $PROJECT_PATH --configuration Release
-
-echo "Building time management..."
-# Path to time management project
 PROJECT_PATH="./src/client/TimeManagement/TimeManagement.csproj"
 
 # Restore dependencies
@@ -43,3 +28,5 @@ echo "Building project..."
 dotnet build $PROJECT_PATH --configuration Release
 
 echo "Build completed successfully."
+
+read -p "Press any key to continue..." -n1 -s
