@@ -25,7 +25,7 @@ dotnet restore $PROJECT_PATH
 
 # Build the project
 echo "Building project..."
-dotnet build $PROJECT_PATH --configuration Release
+dotnet build $PROJECT_PATH -c Release
 
 echo "Build completed successfully."
 
