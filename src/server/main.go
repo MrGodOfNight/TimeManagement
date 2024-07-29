@@ -31,6 +31,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/joho/godotenv"
 )
@@ -52,8 +53,8 @@ func main() {
 	route.Routes(mux)
 
 	// Start server
-	fmt.Println("Starting server at port 8080")
-	if err := http.ListenAndServe(":8080", nil); err != nil {
+	fmt.Println("Starting server at http://" + os.Getenv("SERVER_URL"))
+	if err := http.ListenAndServe(os.Getenv("SERVER_URL"), nil); err != nil {
 		fmt.Println("Error starting server:", err)
 	}
 }
