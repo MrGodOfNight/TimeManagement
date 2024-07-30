@@ -1,0 +1,16 @@
+﻿{
+  "en": {
+    "auth": "Auth",
+    "login": "Login",
+    "password": "Password",
+    "auth_button": "Auth",
+    "cancel":  "Cancel"
+  },
+  "ru": {
+    "auth": "Авторизация",
+    "login": "Логин",
+    "password": "Пароль",
+    "auth_button": "Авторизоваться",
+    "cancel": "Отменить"
+  }
+}
