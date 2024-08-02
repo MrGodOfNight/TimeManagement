@@ -12,10 +12,9 @@ namespace TimeManagement.src.localization
     public class Localizer
     {
         public Dictionary<string, Dictionary<string, string>> Translations { get; set; }
-
-        public static Localizer DeserializeJson(string jsonContent)
+        public Localizer(string jsonContent)
         {
-            return JsonConvert.DeserializeObject<Localizer>(jsonContent);
+            Translations = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(jsonContent);
         }
         public static string LoadJsonFile(string resourceName)
         {

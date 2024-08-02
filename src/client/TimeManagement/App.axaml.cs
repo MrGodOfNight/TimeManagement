@@ -26,6 +26,9 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Newtonsoft.Json;
+using System.IO;
+using System.Reflection;
 using System.Reflection.Metadata.Ecma335;
 using TimeManagement.src.localization;
 
@@ -33,12 +36,9 @@ namespace TimeManagement
 {
     public partial class App : Application
     {
-        public static Localizer locale { get; set; }
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
-            string jsonContent = Localizer.LoadJsonFile("TimeManagement.src.localization.localization.json");
-            locale = Localizer.DeserializeJson(jsonContent);
         }
 
         public override void OnFrameworkInitializationCompleted()

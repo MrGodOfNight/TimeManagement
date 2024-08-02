@@ -2,23 +2,23 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		xmlns:local="clr-namespace:TimeManagement"
+		xmlns:vm="clr-namespace:TimeManagement.src.localization"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+		x:DataType="vm:LocalizationViewModel"
         x:Class="TimeManagement.Auth"
         Title="Auth">
-	<Window.DataContext>
-		<local:AuthViewModel/>
-	</Window.DataContext>
 	<Grid ColumnDefinitions="*,Auto,Auto" RowDefinitions="*,*,*">
 		<TextBlock 
 			HorizontalAlignment="Center" 
 			VerticalAlignment="Center" >
 			
 		</TextBlock>
-		<ComboBox SelectedItem="{Binding LocalizationViewModel.CurrentLanguage}"
-				  Margin="10" Grid.Column="3" Width="100">
-			<ComboBoxItem Content="English" Tag="en"/>
-			<ComboBoxItem Content="Russian" Tag="ru"/>
+		<ComboBox SelectedItem="{Binding CurrentLanguage, Mode=TwoWay}"
+				  SelectedIndex="0" Margin="10" Grid.Column="2"
+				  Grid.RowSpan="3" Width="100">
+			<ComboBoxItem Content="English" Tag="en" />
+			<ComboBoxItem Content="Русский" Tag="ru"/>
 		</ComboBox>
+		<Button Click="cl" Content="{Binding AuthButton}"></Button>
 	</Grid>
 </Window>
