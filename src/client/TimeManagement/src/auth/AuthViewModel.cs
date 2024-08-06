@@ -7,10 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using TimeManagement.src.localization;
+using System.Globalization;
 
-namespace TimeManagement.src.localization
+namespace TimeManagement.src.auth
 {
-    public class LocalizationViewModel : INotifyPropertyChanged
+    public class AuthViewModel : INotifyPropertyChanged
     {
         private Localizer _localization;
         private ComboBoxItem _currentLanguage;
@@ -32,6 +34,7 @@ namespace TimeManagement.src.localization
                     OnPropertyChanged(nameof(Password));
                     OnPropertyChanged(nameof(AuthButton));
                     OnPropertyChanged(nameof(Cancel));
+                    OnPropertyChanged(nameof(Auth));
                 }
             }
         }
@@ -40,11 +43,26 @@ namespace TimeManagement.src.localization
         public string Password => _currentTranslations["password"];
         public string AuthButton => _currentTranslations["auth_button"];
         public string Cancel => _currentTranslations["cancel"];
+        public string Auth => _currentTranslations["auth"];
 
-        public LocalizationViewModel()
+        public AuthViewModel()
         {
             string jsonContent = Localizer.LoadJsonFile("TimeManagement.src.localization.localization.json");
             _localization = new Localizer(jsonContent);
+            CultureInfo currentCulture = CultureInfo.CurrentCulture;
+            //TODO: make the default language on the view
+            switch (currentCulture.Name)
+            {
+                case "en-US":
+                    _currentTranslations = _localization.Translations["en"];
+                    break;
+                case "ru-RU":
+                    _currentTranslations = _localization.Translations["ru"];
+                    break;
+                default:
+                    _currentTranslations = _localization.Translations["en"];
+                    break;
+            }
         }
 
         protected void OnPropertyChanged(string name)

@@ -2,23 +2,22 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		xmlns:vm="clr-namespace:TimeManagement.src.localization"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-		x:DataType="vm:LocalizationViewModel"
+		xmlns:vm="clr-namespace:TimeManagement.src.auth"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="450"
+		x:DataType="vm:AuthViewModel"
         x:Class="TimeManagement.Auth"
-        Title="Auth">
-	<Grid ColumnDefinitions="*,Auto,Auto" RowDefinitions="*,*,*">
+        Title="Auth"
+		Width="600" Height="450">
+	<Grid ColumnDefinitions="*,Auto,*" RowDefinitions="Auto,*,*">
 		<TextBlock 
+			Grid.Row="0" Grid.Column="1"
 			HorizontalAlignment="Center" 
-			VerticalAlignment="Center" >
-			
-		</TextBlock>
-		<ComboBox SelectedItem="{Binding CurrentLanguage, Mode=TwoWay}"
-				  SelectedIndex="0" Margin="10" Grid.Column="2"
-				  Grid.RowSpan="3" Width="100">
+			VerticalAlignment="Center" 
+			Text="{Binding Auth}" FontSize="32"/>
+		<ComboBox SelectedItem="{Binding CurrentLanguage, Mode=TwoWay}" Margin="10" 
+				  Grid.Row="0" Grid.Column="2" Width="100" HorizontalAlignment="Left">
 			<ComboBoxItem Content="English" Tag="en" />
 			<ComboBoxItem Content="Русский" Tag="ru"/>
 		</ComboBox>
-		<Button Click="cl" Content="{Binding AuthButton}"></Button>
 	</Grid>
 </Window>
