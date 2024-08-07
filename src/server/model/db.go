@@ -46,11 +46,13 @@ func ConnectDB() {
 		log.Fatal("DATABASE_URL is not set")
 	}
 
+	// Open database connection
 	db, err = sql.Open("postgres", connStr)
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	// Ping database connection
 	err = db.Ping()
 	if err != nil {
 		log.Fatal(err)
@@ -68,6 +70,7 @@ func ExecSQL(query string, args ...interface{}) (sql.Result, error) {
 		ConnectDB()
 	}
 
+	// Execute query
 	res, err := db.Exec(query, args...)
 	if err != nil {
 		return nil, err
@@ -82,6 +85,7 @@ func QuerySQL(query string, args ...interface{}) (*sql.Rows, error) {
 		ConnectDB()
 	}
 
+	// Execute query and return rows
 	rows, err := db.Query(query, args...)
 	if err != nil {
 		return nil, err
@@ -96,6 +100,7 @@ func QueryRowSQL(query string, args ...interface{}) *sql.Row {
 		ConnectDB()
 	}
 
+	// Execute query and return only one row
 	row := db.QueryRow(query, args...)
 
 	return row
@@ -107,7 +112,9 @@ func QueryValueSQL(query string, args ...interface{}) (interface{}, error) {
 		ConnectDB()
 	}
 
+	// Execute query and return only one row
 	row := db.QueryRow(query, args...)
+	// Get value from row
 	var value interface{}
 	err := row.Scan(&value)
 	if err != nil {

@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System;
 using TimeManagement.src.auth;
+using TimeManagement.src;
 
 namespace TimeManagement;
 
@@ -21,12 +22,12 @@ public partial class Auth : Window
         DataContext = new AuthViewModel();
         InitializeComponent();
     }
-    public async void cl(object sender, RoutedEventArgs args)
+    public async void AuthHandler(object sender, RoutedEventArgs args)
     {
-        var asd = new AuthViewModel();
-        string jsonContent = Localizer.LoadJsonFile("TimeManagement.src.localization.localization.json");
-        var _localization = new Localizer(jsonContent);
-        var box = MessageBoxManager.GetMessageBoxStandard("Caption", _localization.Translations.ToString(), ButtonEnum.YesNo);
+        var json = JsonConvert.DeserializeObject<Dictionary<string, string>>(JsonManager.LoadJsonFile("TimeManagement.src.settings.json"));
+        AuthModel auth = new AuthModel(json["server_uri"]);
+        var token = await auth.LoginAsync(UsernameTextBox.Text, PasswordTextBox.Text);
+        var box = MessageBox.Debug(token);
         await box.ShowAsync();
     }
 }

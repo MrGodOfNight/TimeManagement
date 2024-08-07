@@ -1,10 +1,34 @@
 # TimeManagement
 Is an application that will help you to do your own time management or to manage the working time of your employees.
 
-Here the server is written in golang and the client uses WPF for the interface. You can bolt on your own interface if you like.
+Here the server is written in golang and the client uses Avalonia for the interface. You can bolt on your own interface if you like.
 
 ## How to build
-type `./build.sh` in the root directory of the project.
+1. Install [Go](https://go.dev/doc/install).
+2. Install [PostgreSQL](https://www.postgresql.org/download/).
+3. Install [Visual Studio](https://visualstudio.microsoft.com/ru/ru/vs/) and wpf development tools with avalonia.
+4. Copy and rename `example.env` to `.env` and fill in the necessary information.
+5. Type `./build.sh` in the root directory of the project.
+
+## How to run
+1. First 4 steps are the same as in the build section.
+2. Type `go run ./src/server/main.go` in the root directory of the project.
+
+# Russian
+Это приложение, которое поможет вам сделать собственную управление временем или управлять рабочим временем сотрудников.
+
+Здесь написан сервер на golang и клиент на Avalonia для интерфейса. Вы можете подключить свой интерфейс, если вам этого хочется.
+
+## Как собрать
+1. Установите [Go](https://go.dev/doc/install).
+2. Установите [PostgreSQL](https://www.postgresql.org/download/).
+3. Установите [Visual Studio](https://visualstudio.microsoft.com/ru/ru/vs/) и инструменты для разработки WPF и avalonia.
+4. Скопируйте и переименуйте `example.env` в `.env` и заполните необходимую информацию.
+5. Введите `./build.sh` в корневой директории проекта.
+
+## Как запустить
+1. Первые 4 шага как в секции сборки.
+2. Введите `go run ./src/server/main.go` в корневой директории проекта.
 
 ## We have russian and english documentation
 

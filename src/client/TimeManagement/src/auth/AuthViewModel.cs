@@ -35,6 +35,8 @@ namespace TimeManagement.src.auth
                     OnPropertyChanged(nameof(AuthButton));
                     OnPropertyChanged(nameof(Cancel));
                     OnPropertyChanged(nameof(Auth));
+                    OnPropertyChanged(nameof(WatermarkLogin));
+                    OnPropertyChanged(nameof(WatermarkPassword));
                 }
             }
         }
@@ -44,10 +46,13 @@ namespace TimeManagement.src.auth
         public string AuthButton => _currentTranslations["auth_button"];
         public string Cancel => _currentTranslations["cancel"];
         public string Auth => _currentTranslations["auth"];
+        public string WatermarkLogin => _currentTranslations["watermark_login"];
+        public string WatermarkPassword => _currentTranslations["watermark_password"];
+        public int SelectedLang { get; set; }
 
         public AuthViewModel()
         {
-            string jsonContent = Localizer.LoadJsonFile("TimeManagement.src.localization.localization.json");
+            string jsonContent = JsonManager.LoadJsonFile("TimeManagement.src.localization.localization.json");
             _localization = new Localizer(jsonContent);
             CultureInfo currentCulture = CultureInfo.CurrentCulture;
             //TODO: make the default language on the view
@@ -55,12 +60,15 @@ namespace TimeManagement.src.auth
             {
                 case "en-US":
                     _currentTranslations = _localization.Translations["en"];
+                    SelectedLang = 0;
                     break;
                 case "ru-RU":
                     _currentTranslations = _localization.Translations["ru"];
+                    SelectedLang = 1;
                     break;
                 default:
                     _currentTranslations = _localization.Translations["en"];
+                    SelectedLang = 0;
                     break;
             }
         }

@@ -53,6 +53,7 @@ func TokenAuthMiddleware(next http.Handler) http.Handler {
 			http.Error(w, "Missing token", http.StatusBadRequest)
 			return
 		}
+		// Check if token is valid
 		if !model.CheckToken(token) {
 			http.Error(w, "Invalid token", http.StatusUnauthorized)
 			return

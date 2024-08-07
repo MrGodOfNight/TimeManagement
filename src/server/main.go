@@ -54,7 +54,7 @@ func main() {
 
 	// Start server
 	fmt.Println("Starting server at http://" + os.Getenv("SERVER_URL"))
-	if err := http.ListenAndServe(os.Getenv("SERVER_URL"), nil); err != nil {
+	if err := http.ListenAndServe(os.Getenv("SERVER_URL"), mux); err != nil {
 		fmt.Println("Error starting server:", err)
 	}
 }

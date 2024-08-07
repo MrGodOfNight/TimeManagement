@@ -10,9 +10,11 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="src\localization\localization.json" />
+    <None Remove="src\settings.json" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="src\localization\localization.json" />
+    <EmbeddedResource Include="src\settings.json" />
   </ItemGroup>
 
   <ItemGroup>

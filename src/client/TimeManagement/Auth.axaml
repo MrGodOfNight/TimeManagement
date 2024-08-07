@@ -3,21 +3,40 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:vm="clr-namespace:TimeManagement.src.auth"
-        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="300"
 		x:DataType="vm:AuthViewModel"
         x:Class="TimeManagement.Auth"
-        Title="Auth"
-		Width="600" Height="450">
-	<Grid ColumnDefinitions="*,Auto,*" RowDefinitions="Auto,*,*">
+        Title="TimeManagement"
+		Width="600" Height="300">
+	<Grid ColumnDefinitions="*,Auto,*" RowDefinitions="Auto,*">
 		<TextBlock 
 			Grid.Row="0" Grid.Column="1"
-			HorizontalAlignment="Center" 
-			VerticalAlignment="Center" 
-			Text="{Binding Auth}" FontSize="32"/>
-		<ComboBox SelectedItem="{Binding CurrentLanguage, Mode=TwoWay}" Margin="10" 
-				  Grid.Row="0" Grid.Column="2" Width="100" HorizontalAlignment="Left">
+			HorizontalAlignment="Center"
+			VerticalAlignment="Center"
+			Text="{Binding Auth}" FontSize="32" FontWeight="Bold"/>
+		<ComboBox x:Name="Lang" SelectedItem="{Binding CurrentLanguage, Mode=TwoWay}" Margin="10"
+				  SelectedIndex="{Binding SelectedLang}"
+				  Grid.Row="0" Grid.Column="2" Width="100" HorizontalAlignment="Right">
 			<ComboBoxItem Content="English" Tag="en" />
 			<ComboBoxItem Content="Русский" Tag="ru"/>
 		</ComboBox>
+		
+		<Grid ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto"
+			  Grid.Column="1" Grid.Row="1" Margin="20" VerticalAlignment="Center">
+				<TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding Login}" 
+						   FontSize="20" VerticalAlignment="Center"/>
+				<TextBox Grid.Column="1" Grid.Row="0"
+					x:Name="UsernameTextBox" Width="200" Margin="10" 
+						 Watermark="{Binding WatermarkLogin}" VerticalAlignment="Center"/>
+				<TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding Password}"
+						   FontSize="20" VerticalAlignment="Center"/>
+				<TextBox Grid.Column="1" Grid.Row="1" x:Name="PasswordTextBox"
+						 Watermark="{Binding WatermarkPassword}"
+						 Width="200" PasswordChar="*" Margin="10" VerticalAlignment="Center"/>
+			<Button Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"
+					HorizontalAlignment="Center" Width="130"
+					Content="{Binding AuthButton}" VerticalContentAlignment="Center"
+					HorizontalContentAlignment="Center" Margin="10" Click="AuthHandler"/>
+		</Grid>
 	</Grid>
 </Window>

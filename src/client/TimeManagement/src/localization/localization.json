@@ -4,13 +4,17 @@
     "login": "Login",
     "password": "Password",
     "auth_button": "Auth",
-    "cancel":  "Cancel"
+    "cancel": "Cancel",
+    "watermark_login": "Enter your login",
+    "watermark_password":  "Enter your password"
   },
   "ru": {
     "auth": "Авторизация",
     "login": "Логин",
     "password": "Пароль",
     "auth_button": "Авторизоваться",
-    "cancel": "Отменить"
+    "cancel": "Отменить",
+    "watermark_login": "Введите ваш логин",
+    "watermark_password": "Введите ваш пароль"
   }
 }
