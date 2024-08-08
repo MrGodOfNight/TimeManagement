@@ -12,22 +12,58 @@ using System.Collections.Generic;
 using System;
 using TimeManagement.src.auth;
 using TimeManagement.src;
+using Fizzler;
 
 namespace TimeManagement;
 
 public partial class Auth : Window
 {
+    private AuthViewModel _viewModel = new AuthViewModel();
     public Auth()
     {
-        DataContext = new AuthViewModel();
+        // Define the data context for the window
+        DataContext = _viewModel;
         InitializeComponent();
     }
     public async void AuthHandler(object sender, RoutedEventArgs args)
     {
+        AuthButton.IsEnabled = false;
+        // Load the settings from the settings file
         var json = JsonConvert.DeserializeObject<Dictionary<string, string>>(JsonManager.LoadJsonFile("TimeManagement.src.settings.json"));
+        // Create an instance of the AuthModel class
         AuthModel auth = new AuthModel(json["server_uri"]);
-        var token = await auth.LoginAsync(UsernameTextBox.Text, PasswordTextBox.Text);
-        var box = MessageBox.Debug(token);
-        await box.ShowAsync();
+        // Login to the server with the provided username and password and get the token
+        var response = await auth.LoginAsync(UsernameTextBox.Text, PasswordTextBox.Text);
+        if (response == null) 
+        {
+            AuthButton.IsEnabled = true;
+            return;
+        }
+        var responseBody = await response.Content.ReadAsStringAsync();
+
+        switch (response.StatusCode)
+        {
+            case System.Net.HttpStatusCode.Unauthorized:
+                var box = MessageBox.Error(_viewModel.Unauthorized);
+                await box.ShowAsync();
+                AuthButton.IsEnabled = true;
+                return;
+            default:
+                try
+                {
+                    response.EnsureSuccessStatusCode();
+                }
+                catch (Exception)
+                {
+                    box = MessageBox.Error(responseBody);
+                    await box.ShowAsync();
+                    AuthButton.IsEnabled = true;
+                    return;
+                }
+                break;
+        }
+        // Show the token in the debug window
+        var test = MessageBox.Debug(responseBody);
+        await test.ShowAsync();
     }
 }

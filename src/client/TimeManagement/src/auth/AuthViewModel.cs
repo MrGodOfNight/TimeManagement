@@ -48,6 +48,7 @@ namespace TimeManagement.src.auth
         public string Auth => _currentTranslations["auth"];
         public string WatermarkLogin => _currentTranslations["watermark_login"];
         public string WatermarkPassword => _currentTranslations["watermark_password"];
+        public string Unauthorized => _currentTranslations["unauthorized"];
         public int SelectedLang { get; set; }
 
         public AuthViewModel()

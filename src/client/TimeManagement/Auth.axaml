@@ -35,8 +35,10 @@
 						 Width="200" PasswordChar="*" Margin="10" VerticalAlignment="Center"/>
 			<Button Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"
 					HorizontalAlignment="Center" Width="130"
-					Content="{Binding AuthButton}" VerticalContentAlignment="Center"
-					HorizontalContentAlignment="Center" Margin="10" Click="AuthHandler"/>
+					Content="{Binding AuthButton}" 
+					VerticalContentAlignment="Center" x:Name="AuthButton"
+					HorizontalContentAlignment="Center" Margin="10" 
+					Click="AuthHandler"/>
 		</Grid>
 	</Grid>
 </Window>

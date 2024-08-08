@@ -6,7 +6,8 @@
     "auth_button": "Auth",
     "cancel": "Cancel",
     "watermark_login": "Enter your login",
-    "watermark_password":  "Enter your password"
+    "watermark_password": "Enter your password",
+    "unauthorized": "Invalid login or password"
   },
   "ru": {
     "auth": "Авторизация",
@@ -15,6 +16,7 @@
     "auth_button": "Авторизоваться",
     "cancel": "Отменить",
     "watermark_login": "Введите ваш логин",
-    "watermark_password": "Введите ваш пароль"
+    "watermark_password": "Введите ваш пароль",
+    "unauthorized": "Неверный логин или пароль"
   }
 }

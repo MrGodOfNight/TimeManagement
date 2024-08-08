@@ -15,6 +15,7 @@ namespace TimeManagement.src
 {
     public class MessageBox
     {
+        // avalonia message box for debug purposes
         public static IMsBox<string> Debug(string text)
         {
             return MessageBoxManager.GetMessageBoxCustom(
@@ -36,6 +37,7 @@ namespace TimeManagement.src
                 Topmost = false,
             });
         }
+        // avalonia message box for warning purposes
         public static IMsBox<string> Warning(string text)
         {
             return MessageBoxManager.GetMessageBoxCustom(
@@ -57,6 +59,7 @@ namespace TimeManagement.src
                 Topmost = false,
             });
         }
+        // avalonia message box for error purposes
         public static IMsBox<string> Error(Exception e)
         {
             return MessageBoxManager.GetMessageBoxCustom(
@@ -68,6 +71,27 @@ namespace TimeManagement.src
                 },
                 ContentTitle = "Error",
                 ContentMessage = e.Message,
+                Icon = MsBox.Avalonia.Enums.Icon.Error,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                CanResize = true,
+                MaxWidth = 600,
+                MaxHeight = 800,
+                SizeToContent = SizeToContent.WidthAndHeight,
+                ShowInCenter = true,
+                Topmost = false,
+            });
+        }
+        public static IMsBox<string> Error(string text)
+        {
+            return MessageBoxManager.GetMessageBoxCustom(
+            new MessageBoxCustomParams
+            {
+                ButtonDefinitions = new List<ButtonDefinition>
+                {
+                    new ButtonDefinition { Name = "Ok", }
+                },
+                ContentTitle = "Error",
+                ContentMessage = text,
                 Icon = MsBox.Avalonia.Enums.Icon.Error,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner,
                 CanResize = true,

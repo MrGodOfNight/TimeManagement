@@ -72,7 +72,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Generate token
-	token, expirationTime, err := model.GenerateToken()
+	token, expirationTime, err := model.GenerateToken(req.Username)
 	if err != nil {
 		http.Error(w, "Error generating token", http.StatusInternalServerError)
 		return
@@ -94,9 +94,13 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request", http.StatusBadRequest)
 		return
 	}
-
+	username, err := model.GetUsernameFromToken(r.Header.Get("token"))
+	if err != nil {
+		http.Error(w, "Invalid token", http.StatusUnauthorized)
+		return
+	}
 	// Check if user exists and if user level is sufficient
-	if admin, err := model.QueryValueSQL("SELECT admin FROM users WHERE login = $1", req.Username); err != nil {
+	if admin, err := model.QueryValueSQL("SELECT admin FROM users WHERE login = $1", username); err != nil {
 		http.Error(w, "Error checking user level", http.StatusInternalServerError)
 		return
 	} else {

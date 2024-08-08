@@ -26,6 +26,7 @@
 package model
 
 import (
+	"errors"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -35,13 +36,14 @@ import (
 var jwtKey = []byte("my_secret_key")
 
 // Function for generating JWT token
-func GenerateToken() (string, int64, error) {
+func GenerateToken(username string) (string, int64, error) {
 	// Set expiration time (12 hours)
 	expirationTime := time.Now().Add(12 * time.Hour).Unix()
 
 	// Create claims
 	claims := &jwt.StandardClaims{
 		ExpiresAt: expirationTime,
+		Subject:   username,
 	}
 
 	// Create token
@@ -73,4 +75,21 @@ func CheckToken(tokenString string) bool {
 	// Get expiration time and check if token is valid
 	expirationTime := claims.ExpiresAt
 	return time.Now().Unix() < expirationTime
+}
+
+func GetUsernameFromToken(tokenString string) (string, error) {
+	// Parse token
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return jwtKey, nil
+	})
+	if err != nil {
+		return "", err
+	}
+
+	// Get claims
+	claims, ok := token.Claims.(*jwt.StandardClaims)
+	if !ok {
+		return "", errors.New("invalid token")
+	}
+	return claims.Subject, nil
 }

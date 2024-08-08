@@ -10,8 +10,10 @@ namespace TimeManagement.src
 {
     public class JsonManager
     {
+        // Method to load a JSON file from the resources folder
         public static string LoadJsonFile(string resourceName)
         {
+            // Get the assembly that contains the resource
             var assembly = Assembly.GetExecutingAssembly();
             using (Stream stream = assembly.GetManifestResourceStream(resourceName))
             {
