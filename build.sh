@@ -14,6 +14,7 @@ echo "Building server..."
 BUILD_CMD="go build -o ./build/server/ ./src/server"
 $BUILD_CMD
 cp "./.env" "build/server"
+echo "Server build completed successfully."
 
 # Build the client
 echo "Building client..."
@@ -26,6 +27,7 @@ dotnet restore $PROJECT_PATH
 # Build the project
 echo "Building project..."
 dotnet build $PROJECT_PATH -c Release
+echo "Client build completed successfully."
 
 echo "Build completed successfully."
 

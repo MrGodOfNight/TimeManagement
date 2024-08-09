@@ -27,3 +27,4 @@ build/
 **/obj
 **/bin
 **/.env
+logs

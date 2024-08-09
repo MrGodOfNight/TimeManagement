@@ -28,7 +28,6 @@ package main
 import (
 	"TimeManagement/src/server/model"
 	"TimeManagement/src/server/route"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -37,10 +36,17 @@ import (
 )
 
 func main() {
-	// Download .env file
-	err := godotenv.Load()
+	// Create logger
+	logger, err := model.NewLogger()
 	if err != nil {
-		log.Fatalf("Error loading .env file: %v\n", err)
+		log.Fatalf("Error creating logger: %v\n", err)
+	}
+
+	// Download .env file
+	err = godotenv.Load()
+	if err != nil {
+		logger.Error(true, "Error loading .env file: \n", err)
+		os.Exit(1)
 	}
 
 	// Connect to database
@@ -53,8 +59,9 @@ func main() {
 	route.Routes(mux)
 
 	// Start server
-	fmt.Println("Starting server at http://" + os.Getenv("SERVER_URL"))
+	logger.Info(false, "Starting server at http://"+os.Getenv("SERVER_URL"))
 	if err := http.ListenAndServe(os.Getenv("SERVER_URL"), mux); err != nil {
-		fmt.Println("Error starting server:", err)
+		logger.Error(true, "Error starting server: \n", err)
+		os.Exit(1)
 	}
 }

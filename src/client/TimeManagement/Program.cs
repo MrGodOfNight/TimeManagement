@@ -25,11 +25,13 @@
 
 using Avalonia;
 using System;
+using System.Net.Http;
 
 namespace TimeManagement
 {
     internal class Program
     {
+		public static readonly HttpClient client = new HttpClient();
         // Initialization code. Don't use any Avalonia, third-party APIs or any
         // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
         // yet and stuff might break.

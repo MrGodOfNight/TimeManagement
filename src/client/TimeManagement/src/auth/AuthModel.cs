@@ -36,8 +36,6 @@ namespace TimeManagement.src.auth
 {
     public class AuthModel
     {
-        // Create the HttpClient instance
-        private static readonly HttpClient client = new HttpClient();
         private string url;
 
         public AuthModel(string url)
@@ -60,7 +58,7 @@ namespace TimeManagement.src.auth
             try
             {
                 // Send the POST request to the login endpoint
-                var response = await client.PostAsync(this.url, content);
+                var response = await Program.client.PostAsync(this.url, content);
                 return response;
             }
             catch (Exception e)

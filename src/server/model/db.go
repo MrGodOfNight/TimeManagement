@@ -38,24 +38,28 @@ var db *sql.DB
 
 // Function for connecting to database
 func ConnectDB() {
-	var err error
+	logger, err := NewLogger()
+	if err != nil {
+		log.Println("Error creating logger: \n", err)
+		return
+	}
 
 	// Get database URL from environment variable
 	connStr := os.Getenv("DATABASE_URL")
 	if connStr == "" {
-		log.Fatal("DATABASE_URL is not set")
+		logger.Error(true, "DATABASE_URL is not set")
 	}
 
 	// Open database connection
 	db, err = sql.Open("postgres", connStr)
 	if err != nil {
-		log.Fatal(err)
+		logger.Error(true, "Error opening database connection: \n", err)
 	}
 
 	// Ping database connection
 	err = db.Ping()
 	if err != nil {
-		log.Fatal(err)
+		logger.Error(true, "Error pinging database connection: \n", err)
 	}
 }
 

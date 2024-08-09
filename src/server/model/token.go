@@ -27,18 +27,31 @@ package model
 
 import (
 	"errors"
+	"log"
+	"os"
+	"strconv"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
 )
 
 // Key for JWT
-var jwtKey = []byte("my_secret_key")
+var jwtKey = []byte("asd@@!sd233asd1fWSDFASR#fasd235E@ds1dsQWE%%^GFd61>?L:?L")
 
 // Function for generating JWT token
 func GenerateToken(username string) (string, int64, error) {
-	// Set expiration time (12 hours)
-	expirationTime := time.Now().Add(12 * time.Hour).Unix()
+	logger, err := NewLogger()
+	if err != nil {
+		log.Println("Error creating logger: \n", err)
+		return "", 0, err
+	}
+	minutes, err := strconv.Atoi(os.Getenv("TOKEN_TIME"))
+	if err != nil {
+		logger.Error(true, "Error converting token time: \n", err)
+		return "", 0, err
+	}
+	// Set expiration time
+	expirationTime := time.Now().Add(time.Duration(minutes) * time.Minute).Unix()
 
 	// Create claims
 	claims := &jwt.StandardClaims{
@@ -50,6 +63,7 @@ func GenerateToken(username string) (string, int64, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	tokenString, err := token.SignedString(jwtKey)
 	if err != nil {
+		logger.Error(true, "Error generating token: \n", err)
 		return "", 0, err
 	}
 
@@ -58,11 +72,17 @@ func GenerateToken(username string) (string, int64, error) {
 
 // Function for checking if token is valid
 func CheckToken(tokenString string) bool {
+	logger, err := NewLogger()
+	if err != nil {
+		log.Println("Error creating logger: \n", err)
+		return false
+	}
 	// Parse token
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		return jwtKey, nil
 	})
 	if err != nil {
+		logger.Error(true, "Error parsing token: \n", err)
 		return false
 	}
 
@@ -78,11 +98,17 @@ func CheckToken(tokenString string) bool {
 }
 
 func GetUsernameFromToken(tokenString string) (string, error) {
+	logger, err := NewLogger()
+	if err != nil {
+		log.Println("Error creating logger: \n", err)
+		return "", err
+	}
 	// Parse token
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		return jwtKey, nil
 	})
 	if err != nil {
+		logger.Error(true, "Error parsing token: \n", err)
 		return "", err
 	}
 

@@ -28,7 +28,7 @@ package route
 import (
 	"TimeManagement/src/server/model"
 	"encoding/json"
-	"fmt"
+	"log"
 	"net/http"
 
 	"golang.org/x/crypto/bcrypt"
@@ -48,6 +48,11 @@ type ReqBodyRegister struct {
 
 // Function for login
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
+	logger, err := model.NewLogger()
+	if err != nil {
+		log.Println("Error creating logger: \n", err)
+		return
+	}
 	var req ReqBodyLogin
 	// Decode request
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -55,13 +60,12 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// Write request in console
-	fmt.Println(req)
+	logger.Debug(false, req)
 	// Check if user exists
 	row := model.QueryRowSQL("SELECT password FROM users WHERE login = $1", req.Username)
 	// Get hash from database
 	var hash string
-	err := row.Scan(&hash)
-	if err != nil {
+	if err := row.Scan(&hash); err != nil {
 		http.Error(w, "Invalid username or password", http.StatusUnauthorized)
 		return
 	}
@@ -74,6 +78,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	// Generate token
 	token, expirationTime, err := model.GenerateToken(req.Username)
 	if err != nil {
+		logger.Error(true, "Error generating token: \n", err)
 		http.Error(w, "Error generating token", http.StatusInternalServerError)
 		return
 	}
@@ -88,6 +93,11 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 
 // Function for register
 func RegisterHandler(w http.ResponseWriter, r *http.Request) {
+	logger, err := model.NewLogger()
+	if err != nil {
+		log.Println("Error creating logger: \n", err)
+		return
+	}
 	var req ReqBodyRegister
 	// Decode request
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -101,6 +111,7 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	// Check if user exists and if user level is sufficient
 	if admin, err := model.QueryValueSQL("SELECT admin FROM users WHERE login = $1", username); err != nil {
+		logger.Error(true, "Error checking user level: \n", err)
 		http.Error(w, "Error checking user level", http.StatusInternalServerError)
 		return
 	} else {
@@ -113,6 +124,7 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	// Hashing password
 	hash, err := hashPassword(req.Password)
 	if err != nil {
+		logger.Error(true, "Error hashing password: \n", err)
 		http.Error(w, "Error hashing password", http.StatusInternalServerError)
 		return
 	}
