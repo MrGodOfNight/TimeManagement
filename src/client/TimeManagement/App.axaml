@@ -1,9 +1,16 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="TimeManagement.App"
-             RequestedThemeVariant="Light">
+             RequestedThemeVariant="Light"
+			 >
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
-
+	<TrayIcon.Icons>
+		<TrayIcons>
+			<TrayIcon Icon="./public/calendar_clock_schedule_icon-icons.com_51085.ico"
+					  ToolTipText="TimeManagement">
+			</TrayIcon>
+		</TrayIcons>
+	</TrayIcon.Icons>
     <Application.Styles>
         <FluentTheme />
     </Application.Styles>

@@ -58,6 +58,9 @@ func main() {
 	// Register routes
 	route.Routes(mux)
 
+	// Create super admin user
+	//route.Admin("admin", "admin")
+
 	// Start server
 	logger.Info(false, "Starting server at http://"+os.Getenv("SERVER_URL"))
 	if err := http.ListenAndServe(os.Getenv("SERVER_URL"), mux); err != nil {

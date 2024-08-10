@@ -62,7 +62,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	// Write request in console
 	logger.Debug(false, req)
 	// Check if user exists
-	row := model.QueryRowSQL("SELECT password FROM users WHERE login = $1", req.Username)
+	row := model.QueryRowSQL("SELECT password FROM \"user\" WHERE login = $1", req.Username)
 	// Get hash from database
 	var hash string
 	if err := row.Scan(&hash); err != nil {
@@ -110,7 +110,7 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// Check if user exists and if user level is sufficient
-	if admin, err := model.QueryValueSQL("SELECT admin FROM users WHERE login = $1", username); err != nil {
+	if admin, err := model.QueryValueSQL("SELECT admin FROM \"user\" WHERE login = $1", username); err != nil {
 		logger.Error(true, "Error checking user level: \n", err)
 		http.Error(w, "Error checking user level", http.StatusInternalServerError)
 		return
@@ -129,7 +129,29 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// Insert user into database
-	model.ExecSQL("INSERT INTO users (login, password, end_date, admin) VALUES ($1, $2, $3, $4)", req.Username, hash, req.End, req.Admin)
+	model.ExecSQL("INSERT INTO \"user\" (login, password, end_date, admin) VALUES ($1, $2, $3, $4)", req.Username, hash, req.End, req.Admin)
+}
+
+func Admin(login string, password string) {
+	logger, err := model.NewLogger()
+	if err != nil {
+		log.Println("Error creating logger: \n", err)
+		return
+	}
+	// Hashing password
+	hash, err := hashPassword(password)
+	if err != nil {
+		logger.Error(true, "Error hashing password: \n", err)
+		return
+	}
+	// Insert user into database
+	ans, err := model.ExecSQL("INSERT INTO \"user\" (login, password, end_date, admin) VALUES ($1, $2, $3, $4)", login, hash, "01.01.2099", 9999)
+	if err != nil {
+		logger.Error(true, "Error inserting user: \n", err)
+		logger.Error(true, "Answer: \n", ans)
+		return
+	}
+	logger.Info(false, "User created", ans)
 }
 
 // Function for hashing password

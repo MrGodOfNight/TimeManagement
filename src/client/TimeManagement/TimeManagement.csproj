@@ -2,6 +2,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
+    <ApplicationIcon>./public/calendar_clock_schedule_icon-icons.com_51085.ico</ApplicationIcon>
     <Nullable>enable</Nullable>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -9,6 +10,7 @@
     <BaseOutputPath>..\..\..\build\client</BaseOutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="public\calendar_clock_schedule_icon-icons.com_51085.ico" />
     <None Remove="src\localization\localization.json" />
     <None Remove="src\settings.json" />
   </ItemGroup>
@@ -30,6 +32,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="public\" />
+    <AvaloniaResource Include="public\calendar_clock_schedule_icon-icons.com_51085.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AvaloniaResource>
   </ItemGroup>
 </Project>

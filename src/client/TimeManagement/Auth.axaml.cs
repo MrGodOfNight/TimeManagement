@@ -90,5 +90,9 @@ public partial class Auth : Window
         // Show the token in the debug window
         var test = MessageBox.Debug(responseBody);
         await test.ShowAsync();
+
+        MainWindow mainWindow = new MainWindow();
+        mainWindow.Show();
+        this.Close();
     }
 }
