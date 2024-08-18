@@ -47,8 +47,9 @@ func loginRoutes(mux *http.ServeMux) {
 // Middleware for token validation
 func TokenAuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
 		// Decode the token from the header
-		token := r.Header.Get("token")
+		token := r.Header.Get("Token")
 		if token == "" {
 			http.Error(w, "Missing token", http.StatusBadRequest)
 			return

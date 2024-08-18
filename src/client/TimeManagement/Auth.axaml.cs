@@ -38,11 +38,15 @@ using System;
 using TimeManagement.src.auth;
 using TimeManagement.src;
 using Fizzler;
+using Newtonsoft.Json.Linq;
+using System.Net.Http.Headers;
+using System.Net.Http;
 
 namespace TimeManagement;
 
 public partial class Auth : Window
 {
+    static HttpClient httpClient = new HttpClient();
     private AuthViewModel _viewModel = new AuthViewModel();
     public Auth()
     {
@@ -88,11 +92,38 @@ public partial class Auth : Window
                 break;
         }
         // Show the token in the debug window
-        var test = MessageBox.Debug(responseBody);
-        await test.ShowAsync();
+        //var test = MessageBox.Debug(responseBody);
+        //await test.ShowAsync();
+
+
+        //// Парсим JSON строку в объект JObject
+        //JObject jsonObject = JObject.Parse(responseBody);
+        //// Извлекаем значение токена
+        //string token = jsonObject["token"].ToString();
+        //using var request = new HttpRequestMessage(HttpMethod.Post, json["server_uri"] + "/register");
+        //request.Headers.Add("token", token);
+        //request.Content = new StringContent(token);
+        //using var response2 = await httpClient.SendAsync(request);
+        //var responseText = await response.Content.ReadAsStringAsync();
+        //// Проверка успешности запроса
+        //if (response2.IsSuccessStatusCode)
+        //{
+        //    string responseData = await response2.Content.ReadAsStringAsync();
+        //    var box = MessageBox.Error(responseData);
+        //    await box.ShowAsync();
+        //}
+        //else
+        //{
+        //        string responseData = await response2.Content.ReadAsStringAsync();
+        //        var box = MessageBox.Error(responseData);
+        //        await box.ShowAsync();
+        //}
+        //AuthButton.IsEnabled = true;
+
+
 
         MainWindow mainWindow = new MainWindow();
         mainWindow.Show();
         this.Close();
     }
-}
+    }
