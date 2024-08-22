@@ -2,10 +2,66 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+		xmlns:vm="clr-namespace:TimeManagement.src.worktime"
+		x:DataType="vm:MainWindowViewModel"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="550"
+		Width="400" Height="515"
         x:Class="TimeManagement.MainWindow"
         Title="TimeManagement">
-	<Grid>
-		
+	<Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+		<TextBlock
+			Grid.Row="0"
+			HorizontalAlignment="Center"
+			VerticalAlignment="Center"
+			Text="{Binding Main}" FontSize="32" FontWeight="Bold"/>
+		<Grid Grid.Row="1"
+			  ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto"
+			  Margin="15">
+			<TextBlock Margin="10,5"
+				Grid.Row="0" Grid.Column="0"
+				HorizontalAlignment="Center"
+				VerticalAlignment="Center"
+				Text="{Binding WorkTime}" FontSize="20"/>
+			<TextBlock Margin="10,5"
+				Grid.Row="0" Grid.Column="1"
+				HorizontalAlignment="Center"
+				VerticalAlignment="Center"
+				Text="{Binding Main}" FontSize="20"/>
+			<TextBlock Margin="10,5"
+				Grid.Row="1" Grid.Column="0"
+				HorizontalAlignment="Center"
+				VerticalAlignment="Center"
+				Text="{Binding BreakTime}" FontSize="20"/>
+			<TextBlock Margin="10,5"
+				Grid.Row="1" Grid.Column="1"
+				HorizontalAlignment="Center"
+				VerticalAlignment="Center"
+				Text="{Binding Main}" FontSize="20"/>
+			<Button Grid.Row="2" Grid.Column="0"
+				HorizontalAlignment="Center"
+				VerticalAlignment="Center"
+				Content="{Binding Break}"
+				Margin="10,5"/>
+			<Button Grid.Row="2" Grid.Column="1"
+				HorizontalAlignment="Center"
+				VerticalAlignment="Center"
+				Content="{Binding WorkButton}"
+				Margin="10,5"/>
+		</Grid>
+		<TextBlock
+			Grid.Row="2"
+			HorizontalAlignment="Center"
+			VerticalAlignment="Center"
+			Text="{Binding Report}" FontSize="25" FontWeight="Bold"/>
+		<TextBox
+			Grid.Row="3"
+			AcceptsReturn="True" TextWrapping="Wrap"
+			Margin="20" MinHeight="200"/>
+		<Grid Margin="15" HorizontalAlignment="Stretch" Grid.Row="4">
+			<Button HorizontalAlignment="Left" VerticalAlignment="Center"
+				Content="{Binding Send}"/>
+			<Button HorizontalAlignment="Right" VerticalAlignment="Center"
+				Content="{Binding Admin}"/>
+		</Grid>
 	</Grid>
 </Window>

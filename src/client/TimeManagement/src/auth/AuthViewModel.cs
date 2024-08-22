@@ -43,6 +43,8 @@ namespace TimeManagement.src.auth
         private ComboBoxItem _currentLanguage;
         private Dictionary<string, string> _currentTranslations;
 
+        public Dictionary<string, string> CurrentTranslations { get { return _currentTranslations; } }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ComboBoxItem CurrentLanguage

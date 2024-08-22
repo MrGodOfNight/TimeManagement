@@ -24,13 +24,19 @@
 */
 
 using Avalonia.Controls;
+using System.Collections.Generic;
+using TimeManagement.src.auth;
+using TimeManagement.src.worktime;
 
 namespace TimeManagement
 {
     public partial class MainWindow : Window
     {
-        public MainWindow()
+		private Dictionary<string, string> currentLang;
+        public MainWindow(Dictionary<string, string> currentLang)
         {
+			this.currentLang = currentLang;
+            DataContext = new MainWindowViewModel(currentLang);
             InitializeComponent();
         }
     }

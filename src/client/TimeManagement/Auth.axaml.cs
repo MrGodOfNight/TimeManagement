@@ -56,41 +56,41 @@ public partial class Auth : Window
     }
     public async void AuthHandler(object sender, RoutedEventArgs args)
     {
-        AuthButton.IsEnabled = false;
-        // Load the settings from the settings file
-        var json = JsonConvert.DeserializeObject<Dictionary<string, string>>(JsonManager.LoadJsonFile("TimeManagement.src.settings.json"));
-        // Create an instance of the AuthModel class
-        AuthModel auth = new AuthModel(json["server_uri"]);
-        // Login to the server with the provided username and password and get the token
-        var response = await auth.LoginAsync(UsernameTextBox.Text, PasswordTextBox.Text);
-        if (response == null) 
-        {
-            AuthButton.IsEnabled = true;
-            return;
-        }
-        var responseBody = await response.Content.ReadAsStringAsync();
+        //AuthButton.IsEnabled = false;
+        //// Load the settings from the settings file
+        //var json = JsonConvert.DeserializeObject<Dictionary<string, string>>(JsonManager.LoadJsonFile("TimeManagement.src.settings.json"));
+        //// Create an instance of the AuthModel class
+        //AuthModel auth = new AuthModel(json["server_uri"]);
+        //// Login to the server with the provided username and password and get the token
+        //var response = await auth.LoginAsync(UsernameTextBox.Text, PasswordTextBox.Text);
+        //if (response == null) 
+        //{
+        //    AuthButton.IsEnabled = true;
+        //    return;
+        //}
+        //var responseBody = await response.Content.ReadAsStringAsync();
 
-        switch (response.StatusCode)
-        {
-            case System.Net.HttpStatusCode.Unauthorized:
-                var box = MessageBox.Error(_viewModel.Unauthorized);
-                await box.ShowAsync();
-                AuthButton.IsEnabled = true;
-                return;
-            default:
-                try
-                {
-                    response.EnsureSuccessStatusCode();
-                }
-                catch (Exception)
-                {
-                    box = MessageBox.Error(responseBody);
-                    await box.ShowAsync();
-                    AuthButton.IsEnabled = true;
-                    return;
-                }
-                break;
-        }
+        //switch (response.StatusCode)
+        //{
+        //    case System.Net.HttpStatusCode.Unauthorized:
+        //        var box = MessageBox.Error(_viewModel.Unauthorized);
+        //        await box.ShowAsync();
+        //        AuthButton.IsEnabled = true;
+        //        return;
+        //    default:
+        //        try
+        //        {
+        //            response.EnsureSuccessStatusCode();
+        //        }
+        //        catch (Exception)
+        //        {
+        //            box = MessageBox.Error(responseBody);
+        //            await box.ShowAsync();
+        //            AuthButton.IsEnabled = true;
+        //            return;
+        //        }
+        //        break;
+        //}
         // Show the token in the debug window
         //var test = MessageBox.Debug(responseBody);
         //await test.ShowAsync();
@@ -122,7 +122,7 @@ public partial class Auth : Window
 
 
 
-        MainWindow mainWindow = new MainWindow();
+        MainWindow mainWindow = new MainWindow(_viewModel.CurrentTranslations);
         mainWindow.Show();
         this.Close();
     }

@@ -7,7 +7,16 @@
     "cancel": "Cancel",
     "watermark_login": "Enter your login",
     "watermark_password": "Enter your password",
-    "unauthorized": "Invalid login or password"
+    "unauthorized": "Invalid login or password",
+    "main": "Work time",
+    "work_time": "Working hours: ",
+    "break_time": "Break time: ",
+    "break": "Break",
+    "start_work": "Start work",
+    "end_work": "End work",
+    "report": "Work report",
+    "send": "Send report",
+    "admin": "Admin panel"
   },
   "ru": {
     "auth": "Авторизация",
@@ -17,6 +26,15 @@
     "cancel": "Отменить",
     "watermark_login": "Введите ваш логин",
     "watermark_password": "Введите ваш пароль",
-    "unauthorized": "Неверный логин или пароль"
+    "unauthorized": "Неверный логин или пароль",
+    "main": "Рабочее время",
+    "work_time": "Время работы: ",
+    "break_time": "Время перерыва: ",
+    "break": "Перерыв",
+    "start_work": "Начать работу",
+    "end_work": "Закончить работу",
+    "report": "Отчёт по работе",
+    "send": "Отправить отчёт",
+    "admin": "Админ панель"
   }
 }
