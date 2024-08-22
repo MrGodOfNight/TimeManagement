@@ -6,7 +6,7 @@ Here the server is written in golang and the client uses Avalonia for the interf
 ## How to build the project (server and client)
 1. Install [Go](https://go.dev/doc/install).
 2. Install [PostgreSQL](https://www.postgresql.org/download/).
-3. Install [Visual Studio](https://visualstudio.microsoft.com/ru/ru/vs/) and wpf development tools with avalonia.
+3. Install [Visual Studio](https://visualstudio.microsoft.com/en/downloads/) and wpf development tools with avalonia.
 4. Copy and rename `example.env` to `.env` and fill in the necessary information.
 5. Install all the dependencies of the server, by typing in the console command `go mod tidy`.
 6. Type `./build.sh` in the root directory of the project.
@@ -24,7 +24,7 @@ Here the server is written in golang and the client uses Avalonia for the interf
 ## Как собрать (сервер и клиент)
 1. Установите [Go](https://go.dev/doc/install).
 2. Установите [PostgreSQL](https://www.postgresql.org/download/).
-3. Установите [Visual Studio](https://visualstudio.microsoft.com/ru/ru/vs/) и инструменты для разработки WPF и avalonia.
+3. Установите [Visual Studio](https://visualstudio.microsoft.com/ru/downloads/) и инструменты для разработки WPF и avalonia.
 4. Скопируйте и переименуйте `example.env` в `.env` и заполните необходимую информацию.
 5. Установите все зависимости сервера, прописав в консоль команду `go mod tidy`.
 6. Введите `./build.sh` в корневой директории проекта.

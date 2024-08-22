@@ -6,3 +6,6 @@
 2. [contribution](./contribution.md)
 3. [server](./server.md)
 4. [client](./client.md)
+
+### Using the application
+1. [problems](./problems.md)
