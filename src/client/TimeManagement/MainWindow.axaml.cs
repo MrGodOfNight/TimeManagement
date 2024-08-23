@@ -24,6 +24,7 @@
 */
 
 using Avalonia.Controls;
+using Avalonia.Input;
 using System.Collections.Generic;
 using TimeManagement.src.auth;
 using TimeManagement.src.worktime;
@@ -39,5 +40,6 @@ namespace TimeManagement
             DataContext = new MainWindowViewModel(currentLang);
             InitializeComponent();
         }
+
     }
 }

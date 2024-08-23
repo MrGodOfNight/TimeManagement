@@ -105,7 +105,7 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Get username from token
-	username, err := model.GetUsernameFromToken(r.Header.Get("token"))
+	username, err := model.GetUsernameFromToken(r.Header.Get("Token"))
 	if err != nil {
 		http.Error(w, "Invalid token", http.StatusUnauthorized)
 		return
