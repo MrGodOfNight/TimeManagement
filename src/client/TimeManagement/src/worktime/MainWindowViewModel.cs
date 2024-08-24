@@ -50,12 +50,15 @@ namespace TimeManagement.src.worktime
         public string Main => _currentTranslations["main"];
         public string WorkTime => _currentTranslations["work_time"];
         public string BreakTime => _currentTranslations["break_time"];
-        public string Break => _currentTranslations["break"];
-        public string WorkButton => _currentTranslations["start_work"]; //_currentTranslations["end_work"];
+        public string StartBreak => _currentTranslations["start_break"];
+        public string StopBreak => _currentTranslations["stop_break"];
+        public string StartWork => _currentTranslations["start_work"];
+        public string StopWork => _currentTranslations["end_work"];
         public string Report => _currentTranslations["report"];
         public string Send => _currentTranslations["send"];
+        public string StatisticButton => _currentTranslations["statistic_button"];
+        public string SendError => _currentTranslations["send_error"];
         public string Admin => _currentTranslations["admin"];
-
         protected void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));

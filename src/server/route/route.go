@@ -31,17 +31,34 @@ import (
 )
 
 func Routes(mux *http.ServeMux) {
-	loginRoutes(mux)
-}
-
-func loginRoutes(mux *http.ServeMux) {
 	// For login, we'll use the LoginHandler function because we don't need to protect it
 	mux.HandleFunc("/login", LoginHandler)
+	workRoutes(mux)
+	adminRoutes(mux)
+}
+
+func workRoutes(mux *http.ServeMux) {
+	// Create a new ServeMux for the work routes
+	NewServeMux := http.NewServeMux()
+	NewServeMux.HandleFunc("/work/start", StartWork)
+	NewServeMux.HandleFunc("/work/stop", StopWork)
+	NewServeMux.HandleFunc("/work/report", Report)
+	NewServeMux.HandleFunc("/break/start", StartBreak)
+	NewServeMux.HandleFunc("/break/stop", StopBreak)
+	// Use the TokenAuthMiddleware to protect the work routes
+	mux.Handle("/work/start", TokenAuthMiddleware(NewServeMux))
+	mux.Handle("/work/stop", TokenAuthMiddleware(NewServeMux))
+	mux.Handle("/work/report", TokenAuthMiddleware(NewServeMux))
+	mux.Handle("/break/start", TokenAuthMiddleware(NewServeMux))
+	mux.Handle("/break/stop", TokenAuthMiddleware(NewServeMux))
+}
+
+func adminRoutes(mux *http.ServeMux) {
 	// Create a new ServeMux for the register route
-	loginRouter := http.NewServeMux()
-	loginRouter.HandleFunc("/register", RegisterHandler)
+	NewServeMux := http.NewServeMux()
+	NewServeMux.HandleFunc("/admin/register", RegisterHandler)
 	// Use the TokenAuthMiddleware to protect the register route
-	mux.Handle("/register", TokenAuthMiddleware(loginRouter))
+	mux.Handle("/admin/register", TokenAuthMiddleware(NewServeMux))
 }
 
 // Middleware for token validation

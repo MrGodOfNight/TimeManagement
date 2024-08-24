@@ -11,11 +11,14 @@
     "main": "Work time",
     "work_time": "Working hours: ",
     "break_time": "Break time: ",
-    "break": "Break",
+    "start_break": "Start break",
+    "stop_break": "Stop break",
     "start_work": "Start work",
     "end_work": "End work",
     "report": "Work report",
     "send": "Send report",
+    "statistic_button": "Your statistic",
+    "send_error": "Enter the report to be sent",
     "admin": "Admin panel"
   },
   "ru": {
@@ -30,11 +33,14 @@
     "main": "Рабочее время",
     "work_time": "Время работы: ",
     "break_time": "Время перерыва: ",
-    "break": "Перерыв",
+    "start_break": "Начать перерыв",
+    "stop_break": "Закончить перерыв",
     "start_work": "Начать работу",
     "end_work": "Закончить работу",
     "report": "Отчёт по работе",
     "send": "Отправить отчёт",
+    "statistic_button": "Ваша статистика",
+    "send_error": "Введите отчёт для отправки",
     "admin": "Админ панель"
   }
 }

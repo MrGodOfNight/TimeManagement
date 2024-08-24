@@ -107,8 +107,11 @@ func GetUsernameFromToken(tokenString string) (string, error) {
 		return "", err
 	}
 	// Parse token
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		return jwtKey, nil
+	token, err := jwt.ParseWithClaims(tokenString, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, errors.New("unexpected signing method")
+		}
+		return []byte(jwtKey), nil
 	})
 	if err != nil {
 		logger.Error(true, "Error parsing token: \n", err)

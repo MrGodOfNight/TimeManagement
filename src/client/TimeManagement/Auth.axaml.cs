@@ -37,7 +37,6 @@ using System.Collections.Generic;
 using System;
 using TimeManagement.src.auth;
 using TimeManagement.src;
-using Fizzler;
 using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;
 using System.Net.Http;
@@ -46,7 +45,6 @@ namespace TimeManagement;
 
 public partial class Auth : Window
 {
-    static HttpClient httpClient = new HttpClient();
     private AuthViewModel _viewModel = new AuthViewModel();
     public Auth()
     {
@@ -56,73 +54,49 @@ public partial class Auth : Window
     }
     public async void AuthHandler(object sender, RoutedEventArgs args)
     {
-        //AuthButton.IsEnabled = false;
-        //// Load the settings from the settings file
-        //var json = JsonConvert.DeserializeObject<Dictionary<string, string>>(JsonManager.LoadJsonFile("TimeManagement.src.settings.json"));
-        //// Create an instance of the AuthModel class
-        //AuthModel auth = new AuthModel(json["server_uri"]);
-        //// Login to the server with the provided username and password and get the token
-        //var response = await auth.LoginAsync(UsernameTextBox.Text, PasswordTextBox.Text);
-        //if (response == null) 
-        //{
-        //    AuthButton.IsEnabled = true;
-        //    return;
-        //}
-        //var responseBody = await response.Content.ReadAsStringAsync();
+        AuthButton.IsEnabled = false;
+        // Load the settings from the settings file
+        var json = JsonConvert.DeserializeObject<Dictionary<string, string>>(JsonManager.LoadJsonFile("TimeManagement.src.settings.json"));
+        // Create an instance of the AuthModel class
+        AuthModel auth = new AuthModel(json["server_uri"]);
+        // Login to the server with the provided username and password and get the token
+        var response = await auth.LoginAsync(UsernameTextBox.Text, PasswordTextBox.Text);
+        if (response == null)
+        {
+            AuthButton.IsEnabled = true;
+            return;
+        }
+        var responseBody = await response.Content.ReadAsStringAsync();
 
-        //switch (response.StatusCode)
-        //{
-        //    case System.Net.HttpStatusCode.Unauthorized:
-        //        var box = MessageBox.Error(_viewModel.Unauthorized);
-        //        await box.ShowAsync();
-        //        AuthButton.IsEnabled = true;
-        //        return;
-        //    default:
-        //        try
-        //        {
-        //            response.EnsureSuccessStatusCode();
-        //        }
-        //        catch (Exception)
-        //        {
-        //            box = MessageBox.Error(responseBody);
-        //            await box.ShowAsync();
-        //            AuthButton.IsEnabled = true;
-        //            return;
-        //        }
-        //        break;
-        //}
-        // Show the token in the debug window
-        //var test = MessageBox.Debug(responseBody);
-        //await test.ShowAsync();
+        switch (response.StatusCode)
+        {
+            case System.Net.HttpStatusCode.Unauthorized:
+                var box = MessageBox.Error(_viewModel.Unauthorized);
+                await box.ShowAsync();
+                AuthButton.IsEnabled = true;
+                return;
+            default:
+                try
+                {
+                    response.EnsureSuccessStatusCode();
+                }
+                catch (Exception)
+                {
+                    box = MessageBox.Error(responseBody);
+                    await box.ShowAsync();
+                    AuthButton.IsEnabled = true;
+                    return;
+                }
+                break;
+        }
 
-
-        //// Парсим JSON строку в объект JObject
-        //JObject jsonObject = JObject.Parse(responseBody);
-        //// Извлекаем значение токена
-        //string token = jsonObject["token"].ToString();
-        //using var request = new HttpRequestMessage(HttpMethod.Post, json["server_uri"] + "/register");
-        //request.Headers.Add("token", token);
-        //request.Content = new StringContent(token);
-        //using var response2 = await httpClient.SendAsync(request);
-        //var responseText = await response.Content.ReadAsStringAsync();
-        //// Проверка успешности запроса
-        //if (response2.IsSuccessStatusCode)
-        //{
-        //    string responseData = await response2.Content.ReadAsStringAsync();
-        //    var box = MessageBox.Error(responseData);
-        //    await box.ShowAsync();
-        //}
-        //else
-        //{
-        //        string responseData = await response2.Content.ReadAsStringAsync();
-        //        var box = MessageBox.Error(responseData);
-        //        await box.ShowAsync();
-        //}
-        //AuthButton.IsEnabled = true;
-
-
-
-        MainWindow mainWindow = new MainWindow(_viewModel.CurrentTranslations);
+        // Парсим JSON строку в объект JObject
+        JObject jsonObject = JObject.Parse(responseBody);
+        // Извлекаем значение токена
+        string token = jsonObject["token"].ToString();
+        int admin = (int)jsonObject["admin"];
+        AuthButton.IsEnabled = true;
+        MainWindow mainWindow = new MainWindow(_viewModel.CurrentTranslations, token, admin);
         mainWindow.Show();
         this.Close();
     }

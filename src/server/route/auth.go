@@ -30,6 +30,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"time"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -62,10 +63,10 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	// Write request in console
 	logger.Debug(false, req)
 	// Check if user exists
-	row := model.QueryRowSQL("SELECT password FROM \"user\" WHERE login = $1", req.Username)
+	row := model.QueryRowSQL("SELECT password, admin FROM \"user\" WHERE login = $1", req.Username)
 	// Get hash from database
-	var hash string
-	if err := row.Scan(&hash); err != nil {
+	var hash, admin string
+	if err := row.Scan(&hash, &admin); err != nil {
 		http.Error(w, "Invalid username or password", http.StatusUnauthorized)
 		return
 	}
@@ -82,11 +83,19 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error generating token", http.StatusInternalServerError)
 		return
 	}
+	// Update last login time
+	_, err = model.ExecSQL("UPDATE \"user\" SET last_time = $1 WHERE login = $2", time.Now().Format("2006-01-02 15:04:05"), req.Username)
+	if err != nil {
+		logger.Error(true, "Error updating last time: \n", err)
+		http.Error(w, "Error updating last time", http.StatusInternalServerError)
+		return
+	}
 
 	// Write response
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"token": token,
+		"admin": admin,
 	})
 }
 
