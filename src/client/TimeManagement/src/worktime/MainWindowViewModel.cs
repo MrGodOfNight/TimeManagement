@@ -59,6 +59,9 @@ namespace TimeManagement.src.worktime
         public string StatisticButton => _currentTranslations["statistic_button"];
         public string SendError => _currentTranslations["send_error"];
         public string Admin => _currentTranslations["admin"];
+        public string Day => _currentTranslations["today"];
+        public string Month => _currentTranslations["for_month"];
+        public string Refresh => _currentTranslations["refresh"];
         protected void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));

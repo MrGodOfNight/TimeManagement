@@ -34,6 +34,7 @@ func Routes(mux *http.ServeMux) {
 	// For login, we'll use the LoginHandler function because we don't need to protect it
 	mux.HandleFunc("/login", LoginHandler)
 	workRoutes(mux)
+	statisticsRoutes(mux)
 	adminRoutes(mux)
 }
 
@@ -51,6 +52,16 @@ func workRoutes(mux *http.ServeMux) {
 	mux.Handle("/work/report", TokenAuthMiddleware(NewServeMux))
 	mux.Handle("/break/start", TokenAuthMiddleware(NewServeMux))
 	mux.Handle("/break/stop", TokenAuthMiddleware(NewServeMux))
+}
+
+func statisticsRoutes(mux *http.ServeMux) {
+	// Create a new ServeMux for the statistics routes
+	NewServeMux := http.NewServeMux()
+	NewServeMux.HandleFunc("/statistics/day/", UserDayStatistics)
+	NewServeMux.HandleFunc("/statistics/month/", UserMonthStatistics)
+	// Use the TokenAuthMiddleware to protect the statistics routes
+	mux.Handle("/statistics/day/", TokenAuthMiddleware(NewServeMux))
+	mux.Handle("/statistics/month/", TokenAuthMiddleware(NewServeMux))
 }
 
 func adminRoutes(mux *http.ServeMux) {

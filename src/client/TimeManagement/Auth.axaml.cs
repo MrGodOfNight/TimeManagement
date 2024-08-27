@@ -96,7 +96,7 @@ public partial class Auth : Window
         string token = jsonObject["token"].ToString();
         int admin = (int)jsonObject["admin"];
         AuthButton.IsEnabled = true;
-        MainWindow mainWindow = new MainWindow(_viewModel.CurrentTranslations, token, admin);
+        MainWindow mainWindow = new MainWindow(_viewModel.CurrentTranslations, UsernameTextBox.Text, token, admin);
         mainWindow.Show();
         this.Close();
     }

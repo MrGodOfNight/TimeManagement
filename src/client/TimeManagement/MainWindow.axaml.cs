@@ -45,6 +45,7 @@ namespace TimeManagement
     {
         private HttpClient _httpClient = new HttpClient();
         private string _token;
+        private string _login;
         private MainWindowViewModel _viewModel;
         private DispatcherTimer _workTimer;
         private DispatcherTimer _breakTimer;
@@ -55,10 +56,11 @@ namespace TimeManagement
         private int _workTimeID;
         private int _breakTimeID;
         private int _adminLvl;
-        public MainWindow(Dictionary<string, string> currentLang, string token, int adminLvl)
+        public MainWindow(Dictionary<string, string> currentLang, string login, string token, int adminLvl)
         {
             _token = token;
             _adminLvl = adminLvl;
+            _login = login;
             _viewModel = new MainWindowViewModel(currentLang);
             DataContext = _viewModel;
             InitializeComponent();
@@ -170,6 +172,30 @@ namespace TimeManagement
                 _breakClickCount = 0;
             }
         }
+        public async void RefreshDay_Click(object sender, RoutedEventArgs e)
+        {
+            var res = await SendRequest("/statistics/day/" + _login);
+            if (res == "") return;
+            else
+            {
+                var box = MessageBox.Error(res);
+                await box.ShowAsync();
+            }
+        }
+        public async void RefreshMonth_Click(object sender, RoutedEventArgs e)
+        {
+            var res = await SendRequest("/statistics/month/" + _login, new
+            {
+                Month = 8,
+                Year = 2024
+            });
+            if (res == "") return;
+            else
+            {
+                var box = MessageBox.Error(res);
+                await box.ShowAsync();
+            }
+        }
         public async void Send(object sender, RoutedEventArgs e)
         {
             if (Report.Text == "")
@@ -187,22 +213,36 @@ namespace TimeManagement
             }
         }
 
-        private async Task<string> SendRequest(string uri, object data)
+        private async Task<string> SendRequest(string uri, object data = null)
         {
             var json = JsonConvert.DeserializeObject<Dictionary<string, string>>(JsonManager.LoadJsonFile("TimeManagement.src.settings.json"));
             using var request = new HttpRequestMessage(HttpMethod.Post, json["server_uri"] + uri);
             request.Headers.Add("token", _token);
-            var json2 = JsonConvert.SerializeObject(data);
-            request.Content = new StringContent(json2, Encoding.UTF8, "application/json");
-            using var response = await _httpClient.SendAsync(request);
-            string responseData = await response.Content.ReadAsStringAsync();
-            if (!response.IsSuccessStatusCode)
+            if (data != null)
             {
-                var box = MessageBox.Error(responseData);
+                var json2 = JsonConvert.SerializeObject(data);
+                request.Content = new StringContent(json2, Encoding.UTF8, "application/json");
+            }
+            try
+            {
+                using var response = await _httpClient.SendAsync(request);
+                string responseData = await response.Content.ReadAsStringAsync();
+                if (!response.IsSuccessStatusCode)
+                {
+                    var box = MessageBox.Error(responseData);
+                    await box.ShowAsync();
+                    return "";
+                }
+                return responseData;
+            }
+            catch (Exception ex)
+            {
+
+                var box = MessageBox.Error(ex);
                 await box.ShowAsync();
                 return "";
             }
-            return responseData;
+            
         }
     }
 }

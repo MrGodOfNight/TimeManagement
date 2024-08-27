@@ -19,7 +19,10 @@
     "send": "Send report",
     "statistic_button": "Your statistic",
     "send_error": "Enter the report to be sent",
-    "admin": "Admin panel"
+    "admin": "Admin panel",
+    "today": "Worked out for today: ",
+    "for_month": "Worked out for the month",
+    "refresh":  "Refresh"
   },
   "ru": {
     "auth": "Авторизация",
@@ -41,6 +44,9 @@
     "send": "Отправить отчёт",
     "statistic_button": "Ваша статистика",
     "send_error": "Введите отчёт для отправки",
-    "admin": "Админ панель"
+    "admin": "Админ панель",
+    "today": "Отработано за сегодня: ",
+    "for_month": "Отработано за месяц",
+    "refresh": "Обновить"
   }
 }
