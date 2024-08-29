@@ -1,3 +1,28 @@
+/*
+	MIT License
+
+	Copyright (c) 2024 Ushakov Igor
+
+	Permission is hereby granted, free of charge, to any person obtaining a copy
+	of this software and associated documentation files (the "Software"), to deal
+	in the Software without restriction, including without limitation the rights
+	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	copies of the Software, and to permit persons to whom the Software is
+	furnished to do so, subject to the following conditions:
+
+	The above copyright notice and this permission notice shall be included in all
+	copies or substantial portions of the Software.
+
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+	SOFTWARE.
+
+*/
+
 package route
 
 import (
@@ -11,8 +36,8 @@ import (
 
 // Struct for statistics
 type ReqStatisticsBody struct {
-	Month string `json:"month"`
-	Year  string `json:"year"`
+	Month int `json:"month"`
+	Year  int `json:"year"`
 }
 
 // Struct for statistics
@@ -118,7 +143,7 @@ func UserMonthStatistics(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// Get user ID from URL
-	userID := strings.TrimPrefix(r.URL.Path, "/statistics/day/")
+	userID := strings.TrimPrefix(r.URL.Path, "/statistics/month/")
 
 	// Check if user ID is valid
 	if userID == "" {
@@ -145,9 +170,7 @@ func UserMonthStatistics(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request", http.StatusBadRequest)
 		return
 	}
-	logger.Debug(false, "Request body: ", req)
 
-	//ERROR: Don't work
 	rows, err := model.QuerySQL(`WITH user_id_cte AS (
     SELECT id
     FROM "user"
@@ -172,9 +195,9 @@ daily_totals AS (
 SELECT
     "date",
     CONCAT(
-        FLOOR(total_seconds / 3600), 'h ',
-        FLOOR((total_seconds % 3600) / 60), 'm ',
-        total_seconds % 60, 's'
+        FLOOR(total_seconds / 3600), ':',
+        FLOOR((total_seconds % 3600) / 60), ':',
+        CAST(total_seconds % 60 AS INT)
     ) AS time
 FROM daily_totals
 ORDER BY "date";
@@ -184,7 +207,6 @@ ORDER BY "date";
 		http.Error(w, "Error getting work time", http.StatusInternalServerError)
 		return
 	}
-	logger.Debug(false, "Rows: ", rows)
 
 	var data []TimeForMonth
 	for rows.Next() {
@@ -204,7 +226,6 @@ ORDER BY "date";
 		http.Error(w, "Error marshalling JSON", http.StatusInternalServerError)
 		return
 	}
-	logger.Debug(false, "JSON data: ", jsonData)
 
 	// Return response
 	w.Header().Set("Content-Type", "application/json")
