@@ -60,8 +60,6 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request", http.StatusBadRequest)
 		return
 	}
-	// Write request in console
-	logger.Debug(false, req)
 	// Check if user exists
 	row := model.QueryRowSQL("SELECT password, admin FROM \"user\" WHERE login = $1", req.Username)
 	// Get hash from database
@@ -119,8 +117,6 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid token", http.StatusUnauthorized)
 		return
 	}
-
-	logger.Debug(false, "Username from token", username)
 
 	// Check if user exists and if user level is sufficient
 	if admin, err := model.QueryValueSQL("SELECT admin FROM \"user\" WHERE login = $1", username); err != nil {

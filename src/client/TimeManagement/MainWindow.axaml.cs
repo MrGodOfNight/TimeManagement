@@ -31,13 +31,15 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using TimeManagement.src;
 using TimeManagement.src.auth;
 using TimeManagement.src.worktime;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TimeManagement
 {
@@ -46,7 +48,6 @@ namespace TimeManagement
         private HttpClient _httpClient = new HttpClient();
         private string _token;
         private string _login;
-        private MainWindowViewModel _viewModel;
         private DispatcherTimer _workTimer;
         private DispatcherTimer _breakTimer;
         private TimeSpan _workTime;
@@ -61,8 +62,7 @@ namespace TimeManagement
             _token = token;
             _adminLvl = adminLvl;
             _login = login;
-            _viewModel = new MainWindowViewModel(currentLang);
-            DataContext = _viewModel;
+            DataContext = new MainWindowViewModel(currentLang);
             InitializeComponent();
             if (_adminLvl < 1)
             {
@@ -111,7 +111,10 @@ namespace TimeManagement
                 Report.IsEnabled = true;
                 SendButton.IsEnabled = true;
                 BreakButton.IsEnabled = true;
-                WorkButton.Content = _viewModel.StopWork;
+                if (DataContext is MainWindowViewModel viewModel)
+                {
+                    WorkButton.Content = viewModel.StopWork;
+                }
             }
             else if (_workClickCount == 2)
             {
@@ -132,7 +135,10 @@ namespace TimeManagement
                 _breakTimer.Stop();
                 _workTime = TimeSpan.Zero;
                 _breakTime = TimeSpan.Zero;
-                WorkButton.Content = _viewModel.StartWork;
+                if (DataContext is MainWindowViewModel viewModel)
+                {
+                    WorkButton.Content = viewModel.StartWork;
+                }
                 Report.IsEnabled = false;
                 SendButton.IsEnabled = false;
                 BreakButton.IsEnabled = false;
@@ -157,7 +163,10 @@ namespace TimeManagement
                 }
                 _workTimer.Stop();
                 _breakTimer.Start();
-                BreakButton.Content = _viewModel.StopBreak;
+                if (DataContext is MainWindowViewModel viewModel)
+                {
+                    BreakButton.Content = viewModel.StopBreak;
+                }
             }
             else if (_breakClickCount == 2)
             {
@@ -168,7 +177,10 @@ namespace TimeManagement
                 }) == "") return;
                 _breakTimer.Stop();
                 _workTimer.Start();
-                BreakButton.Content = _viewModel.StartBreak;
+                if (DataContext is MainWindowViewModel viewModel)
+                {
+                    BreakButton.Content = viewModel.StartBreak;
+                }
                 _breakClickCount = 0;
             }
         }
@@ -176,11 +188,13 @@ namespace TimeManagement
         {
             var res = await SendRequest("/statistics/day/" + _login);
             if (res == "") return;
-            else
+            var json = JsonConvert.DeserializeObject<DayTime>(res);
+            //TODO: надо сделать норм
+            if (json.Time == "::")
             {
-                var box = MessageBox.Error(res);
-                await box.ShowAsync();
+                DayText.Text = "00:00:00";
             }
+            DayText.Text = json.Time;
         }
         public async void RefreshMonth_Click(object sender, RoutedEventArgs e)
         {
@@ -190,17 +204,18 @@ namespace TimeManagement
                 Year = 2024
             });
             if (res == "") return;
-            else
+            var json = JsonConvert.DeserializeObject<ObservableCollection<Table>>(res);
+            if (DataContext is MainWindowViewModel viewModel)
             {
-                var box = MessageBox.Error(res);
-                await box.ShowAsync();
+                viewModel.UpdateTables(json);
             }
+            //_viewModel.Tables = json;
         }
         public async void Send(object sender, RoutedEventArgs e)
         {
             if (Report.Text == "")
             {
-                var box = MessageBox.Error(_viewModel.SendError);
+                var box = MessageBox.Error(DataContext is MainWindowViewModel viewModel ? viewModel.SendError : "");
                 await box.ShowAsync();
             }
             else

@@ -40,12 +40,25 @@ namespace TimeManagement.src.worktime
     public class MainWindowViewModel : INotifyPropertyChanged
     {
         private Dictionary<string, string> _currentTranslations;
+        private ObservableCollection<Table> _tables;
+        public ObservableCollection<Table> Tables {
+            get => _tables;
+            set 
+            {
+                _tables = value;
+                OnPropertyChanged(nameof(Tables));
+            } 
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public MainWindowViewModel(Dictionary<string, string> currentLang)
         {
             _currentTranslations = currentLang;
+            //_tables = new ObservableCollection<Table>
+            //{
+            //    new Table { Date = "2424", Time = "2323"}
+            //};
         }
         public string Main => _currentTranslations["main"];
         public string WorkTime => _currentTranslations["work_time"];
@@ -62,9 +75,15 @@ namespace TimeManagement.src.worktime
         public string Day => _currentTranslations["today"];
         public string Month => _currentTranslations["for_month"];
         public string Refresh => _currentTranslations["refresh"];
+        public string Date1 => _currentTranslations["date"];
+        public string Time1 => _currentTranslations["time"];
         protected void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+        public void UpdateTables(ObservableCollection<Table> tables)
+        {
+            this.Tables = tables;
         }
     }
 }

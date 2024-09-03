@@ -42,9 +42,7 @@ type ReqStatisticsBody struct {
 
 // Struct for statistics
 type TimeForDay struct {
-	Hours   float64
-	Minutes float64
-	Seconds float64
+	Time string
 }
 type TimeForMonth struct {
 	Date string
@@ -105,9 +103,9 @@ total_work AS (
     FROM work_sessions
 )
 SELECT
-    FLOOR(total_seconds / 3600) AS hours,
-    FLOOR((total_seconds % 3600) / 60) AS minutes,
-    total_seconds % 60 AS seconds
+    CONCAT (FLOOR(total_seconds / 3600) , ':' ,
+    FLOOR((total_seconds % 3600) / 60), ':' ,
+    CAST(total_seconds % 60 AS INT)) AS time
 FROM total_work;
 `, userID, time.Now().Format("2006-01-02"))
 	if err != nil {
@@ -118,7 +116,7 @@ FROM total_work;
 
 	for rows.Next() {
 		var timeForDay TimeForDay
-		err := rows.Scan(&timeForDay.Hours, &timeForDay.Minutes, &timeForDay.Seconds)
+		err := rows.Scan(&timeForDay.Time)
 		if err != nil {
 			logger.Error(true, "Error scanning row: \n", err)
 			http.Error(w, "Error scanning row", http.StatusInternalServerError)
@@ -193,7 +191,7 @@ daily_totals AS (
     GROUP BY "date"
 )
 SELECT
-    "date",
+    "date" :: text,
     CONCAT(
         FLOOR(total_seconds / 3600), ':',
         FLOOR((total_seconds % 3600) / 60), ':',

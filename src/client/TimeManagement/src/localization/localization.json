@@ -22,7 +22,9 @@
     "admin": "Admin panel",
     "today": "Worked out for today: ",
     "for_month": "Worked out for the month",
-    "refresh":  "Refresh"
+    "refresh": "Refresh",
+    "date": "Date",
+    "time": "Time"
   },
   "ru": {
     "auth": "Авторизация",
@@ -47,6 +49,8 @@
     "admin": "Админ панель",
     "today": "Отработано за сегодня: ",
     "for_month": "Отработано за месяц",
-    "refresh": "Обновить"
+    "refresh": "Обновить",
+    "date": "Дата",
+    "time": "Время"
   }
 }

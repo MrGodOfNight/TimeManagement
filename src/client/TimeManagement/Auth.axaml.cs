@@ -40,20 +40,21 @@ using TimeManagement.src;
 using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;
 using System.Net.Http;
+using TimeManagement.src.worktime;
 
 namespace TimeManagement;
 
 public partial class Auth : Window
 {
-    private AuthViewModel _viewModel = new AuthViewModel();
     public Auth()
     {
         // Define the data context for the window
-        DataContext = _viewModel;
+        DataContext = new AuthViewModel();
         InitializeComponent();
     }
     public async void AuthHandler(object sender, RoutedEventArgs args)
     {
+        if (DataContext is not AuthViewModel viewModel) return;
         AuthButton.IsEnabled = false;
         // Load the settings from the settings file
         var json = JsonConvert.DeserializeObject<Dictionary<string, string>>(JsonManager.LoadJsonFile("TimeManagement.src.settings.json"));
@@ -71,7 +72,8 @@ public partial class Auth : Window
         switch (response.StatusCode)
         {
             case System.Net.HttpStatusCode.Unauthorized:
-                var box = MessageBox.Error(_viewModel.Unauthorized);
+
+                var box = MessageBox.Error(viewModel.Unauthorized);
                 await box.ShowAsync();
                 AuthButton.IsEnabled = true;
                 return;
@@ -96,7 +98,7 @@ public partial class Auth : Window
         string token = jsonObject["token"].ToString();
         int admin = (int)jsonObject["admin"];
         AuthButton.IsEnabled = true;
-        MainWindow mainWindow = new MainWindow(_viewModel.CurrentTranslations, UsernameTextBox.Text, token, admin);
+        MainWindow mainWindow = new MainWindow(viewModel.CurrentTranslations, UsernameTextBox.Text, token, admin);
         mainWindow.Show();
         this.Close();
     }
