@@ -24,7 +24,10 @@
     "for_month": "Worked out for the month",
     "refresh": "Refresh",
     "date": "Date",
-    "time": "Time"
+    "time": "Time",
+    "adminlvl": "Admin level",
+    "end": "account validity",
+    "last_time": "last login"
   },
   "ru": {
     "auth": "Авторизация",
@@ -51,6 +54,9 @@
     "for_month": "Отработано за месяц",
     "refresh": "Обновить",
     "date": "Дата",
-    "time": "Время"
+    "time": "Время",
+    "adminlvl": "Уровень админа",
+    "end": "Срок окончания действия аккаунта",
+    "last_time": "последний вход в систему"
   }
 }

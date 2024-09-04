@@ -41,6 +41,7 @@ using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;
 using System.Net.Http;
 using TimeManagement.src.worktime;
+using System.Collections.ObjectModel;
 
 namespace TimeManagement;
 
@@ -97,9 +98,19 @@ public partial class Auth : Window
         // Извлекаем значение токена
         string token = jsonObject["token"].ToString();
         int admin = (int)jsonObject["admin"];
+        RequestManager requestManager = new RequestManager(token);
+        if (admin > 0)
+        {
+            var users = JsonConvert.DeserializeObject<ObservableCollection<User>>(await requestManager.SendRequestGet("/admin/getusers"));
+            MainWindow mainWindow = new MainWindow(viewModel.CurrentTranslations, UsernameTextBox.Text, token, admin, users);
+            mainWindow.Show();
+        }
+        else
+        {
+            MainWindow mainWindow = new MainWindow(viewModel.CurrentTranslations, UsernameTextBox.Text, token, admin);
+            mainWindow.Show();
+        }
         AuthButton.IsEnabled = true;
-        MainWindow mainWindow = new MainWindow(viewModel.CurrentTranslations, UsernameTextBox.Text, token, admin);
-        mainWindow.Show();
         this.Close();
     }
     }

@@ -68,8 +68,16 @@ func adminRoutes(mux *http.ServeMux) {
 	// Create a new ServeMux for the register route
 	NewServeMux := http.NewServeMux()
 	NewServeMux.HandleFunc("/admin/register", RegisterHandler)
+	NewServeMux.HandleFunc("/admin/changeuser", ChangeUserHandler)
+	// NewServeMux.HandleFunc("/admin/deleteuser", DeleteUserHandler)
+	// NewServeMux.HandleFunc("/admin/checkreport", CheckReportHandler)
+	NewServeMux.HandleFunc("/admin/getusers", GetUsersHandler)
 	// Use the TokenAuthMiddleware to protect the register route
 	mux.Handle("/admin/register", TokenAuthMiddleware(NewServeMux))
+	mux.Handle("/admin/changeuser", TokenAuthMiddleware(NewServeMux))
+	// mux.Handle("/admin/deleteuser", TokenAuthMiddleware(NewServeMux))
+	// mux.Handle("/admin/checkreport", TokenAuthMiddleware(NewServeMux))
+	mux.Handle("/admin/getusers", TokenAuthMiddleware(NewServeMux))
 }
 
 // Middleware for token validation

@@ -45,7 +45,7 @@ namespace TimeManagement
 {
     public partial class MainWindow : Window
     {
-        private HttpClient _httpClient = new HttpClient();
+        //private HttpClient _httpClient = new HttpClient();
         private string _token;
         private string _login;
         private DispatcherTimer _workTimer;
@@ -57,12 +57,21 @@ namespace TimeManagement
         private int _workTimeID;
         private int _breakTimeID;
         private int _adminLvl;
-        public MainWindow(Dictionary<string, string> currentLang, string login, string token, int adminLvl)
+        private RequestManager _requestManager;
+        public MainWindow(Dictionary<string, string> currentLang, string login, string token, int adminLvl, ObservableCollection<User> users = null)
         {
             _token = token;
             _adminLvl = adminLvl;
             _login = login;
+            _requestManager = new RequestManager(_token);
             DataContext = new MainWindowViewModel(currentLang);
+            if (users != null)
+            {
+                if (DataContext is MainWindowViewModel viewModel)
+                {
+                    viewModel.UpdateUsers(users);
+                }
+            }
             InitializeComponent();
             if (_adminLvl < 1)
             {
@@ -96,7 +105,7 @@ namespace TimeManagement
             
             if (_workClickCount == 1)
             {
-                var res = await SendRequest("/work/start", new
+                var res = await _requestManager.SendRequestPost("/work/start", new
                 {
                     Time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
                 });
@@ -120,13 +129,13 @@ namespace TimeManagement
             {
                 if(_breakClickCount == 1)
                 {
-                    if (await SendRequest("/break/stop", new
+                    if (await _requestManager.SendRequestPost("/break/stop", new
                     {
                         Time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
                         ID = _breakTimeID,
                     }) == "") return;
                 }
-                if (await SendRequest("/work/stop", new
+                if (await _requestManager.SendRequestPost("/work/stop", new
                 {
                     Time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
                     ID = _workTimeID,
@@ -151,7 +160,7 @@ namespace TimeManagement
 
             if (_breakClickCount == 1)
             {
-                var res = await SendRequest("/break/start", new
+                var res = await _requestManager.SendRequestPost("/break/start", new
                 {
                     Time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
                 });
@@ -170,7 +179,7 @@ namespace TimeManagement
             }
             else if (_breakClickCount == 2)
             {
-                if (await SendRequest("/break/stop", new
+                if (await _requestManager.SendRequestPost("/break/stop", new
                 {
                     Time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
                     ID = _breakTimeID,
@@ -186,7 +195,7 @@ namespace TimeManagement
         }
         public async void RefreshDay_Click(object sender, RoutedEventArgs e)
         {
-            var res = await SendRequest("/statistics/day/" + _login);
+            var res = await _requestManager.SendRequestGet("/statistics/day/" + _login);
             if (res == "") return;
             var json = JsonConvert.DeserializeObject<DayTime>(res);
             //TODO: надо сделать норм
@@ -198,7 +207,7 @@ namespace TimeManagement
         }
         public async void RefreshMonth_Click(object sender, RoutedEventArgs e)
         {
-            var res = await SendRequest("/statistics/month/" + _login, new
+            var res = await _requestManager.SendRequestGet("/statistics/month/" + _login, new
             {
                 Month = 8,
                 Year = 2024
@@ -220,44 +229,12 @@ namespace TimeManagement
             }
             else
             {
-                if (await SendRequest("/work/report", new
+                if (await _requestManager.SendRequestPost("/work/report", new
                 {
                     ID = _workTimeID,
                     Report.Text,
                 }) == "") return;
             }
-        }
-
-        private async Task<string> SendRequest(string uri, object data = null)
-        {
-            var json = JsonConvert.DeserializeObject<Dictionary<string, string>>(JsonManager.LoadJsonFile("TimeManagement.src.settings.json"));
-            using var request = new HttpRequestMessage(HttpMethod.Post, json["server_uri"] + uri);
-            request.Headers.Add("token", _token);
-            if (data != null)
-            {
-                var json2 = JsonConvert.SerializeObject(data);
-                request.Content = new StringContent(json2, Encoding.UTF8, "application/json");
-            }
-            try
-            {
-                using var response = await _httpClient.SendAsync(request);
-                string responseData = await response.Content.ReadAsStringAsync();
-                if (!response.IsSuccessStatusCode)
-                {
-                    var box = MessageBox.Error(responseData);
-                    await box.ShowAsync();
-                    return "";
-                }
-                return responseData;
-            }
-            catch (Exception ex)
-            {
-
-                var box = MessageBox.Error(ex);
-                await box.ShowAsync();
-                return "";
-            }
-            
         }
     }
 }

@@ -49,16 +49,22 @@ namespace TimeManagement.src.worktime
                 OnPropertyChanged(nameof(Tables));
             } 
         }
+        private ObservableCollection<User> _users;
+        public ObservableCollection<User> Users
+        {
+            get => _users;
+            set
+            {
+                _users = value;
+                OnPropertyChanged(nameof(Users));
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public MainWindowViewModel(Dictionary<string, string> currentLang)
         {
             _currentTranslations = currentLang;
-            //_tables = new ObservableCollection<Table>
-            //{
-            //    new Table { Date = "2424", Time = "2323"}
-            //};
         }
         public string Main => _currentTranslations["main"];
         public string WorkTime => _currentTranslations["work_time"];
@@ -77,6 +83,11 @@ namespace TimeManagement.src.worktime
         public string Refresh => _currentTranslations["refresh"];
         public string Date1 => _currentTranslations["date"];
         public string Time1 => _currentTranslations["time"];
+        public string LVL => _currentTranslations["adminlvl"];
+        public string End => _currentTranslations["end"];
+        public string Last => _currentTranslations["last_time"];
+        public string Password1 => _currentTranslations["password"];
+        public string Login1 => _currentTranslations["login"];
         protected void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
@@ -84,6 +95,10 @@ namespace TimeManagement.src.worktime
         public void UpdateTables(ObservableCollection<Table> tables)
         {
             this.Tables = tables;
+        }
+        public void UpdateUsers(ObservableCollection<User> users)
+        {
+            this.Users = users;
         }
     }
 }

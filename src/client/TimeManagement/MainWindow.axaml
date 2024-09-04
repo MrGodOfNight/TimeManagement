@@ -74,7 +74,8 @@
 							   Text="{Binding Month}" VerticalAlignment="Center"
 								HorizontalAlignment="Center" FontSize="32" FontWeight="Bold"/>
 				<DataGrid x:Name="TimeTable" Grid.Row="2" Margin="30,15,15,15" ItemsSource="{Binding Tables}"
-						  IsReadOnly="True" GridLinesVisibility="All">
+						  IsReadOnly="True" GridLinesVisibility="All" Focusable="False"
+						  CanUserReorderColumns="True" CanUserResizeColumns="True">
 					<DataGrid.Columns>
 						<DataGridTextColumn Header="{Binding Date1}" Binding="{Binding Date}"/>
 						<DataGridTextColumn Header="{Binding Time1}" Binding="{Binding Time}"/>
@@ -86,6 +87,19 @@
 			</Grid>
 		</TabItem>
 		<TabItem Header="{Binding Admin}" x:Name="AdminPanel">
+			<Grid RowDefinitions="Auto,Auto,*,Auto">
+				<DataGrid x:Name="UsersTable" Grid.Row="2" Margin="30,15,15,15" ItemsSource="{Binding Users}"
+						  IsReadOnly="False" GridLinesVisibility="All" Focusable="True"
+						  CanUserReorderColumns="True" CanUserResizeColumns="True" >
+					<DataGrid.Columns>
+						<DataGridTextColumn Header="{Binding Login1}" Binding="{Binding Login}"/>
+						<DataGridTextColumn Header="{Binding Password1}" Binding="{Binding Password}"/>
+						<DataGridTextColumn Header="{Binding End}" Binding="{Binding End}"/>
+						<DataGridTextColumn Header="{Binding LVL}" Binding="{Binding AdminLVL}"/>
+						<DataGridTextColumn Header="{Binding Last}" Binding="{Binding LastTime}"/>
+					</DataGrid.Columns>
+				</DataGrid>
+			</Grid>
 		</TabItem>
 	</TabControl>
 </Window>
