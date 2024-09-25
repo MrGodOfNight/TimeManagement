@@ -23,6 +23,7 @@
 
 */
 
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +37,7 @@ namespace TimeManagement.src.worktime
         public string Login { get; set; }
         public string Password { get; set; }
         public string End { get; set; }
-        public long AdminLVL { get; set; }
         public string LastTime { get; set; }
+        public long Admin { get; set; }
     }
 }

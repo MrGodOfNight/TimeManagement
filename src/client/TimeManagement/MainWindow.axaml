@@ -7,6 +7,7 @@
         mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="550"
 		Width="700" Height="550"
         x:Class="TimeManagement.MainWindow"
+		xmlns:model="using:TimeManagement.src.worktime"
         Title="TimeManagement">
 	<TabControl Margin="5">
 		<TabItem Header="{Binding Main}">
@@ -95,7 +96,20 @@
 						<DataGridTextColumn Header="{Binding Login1}" Binding="{Binding Login}"/>
 						<DataGridTextColumn Header="{Binding Password1}" Binding="{Binding Password}"/>
 						<DataGridTextColumn Header="{Binding End}" Binding="{Binding End}"/>
-						<DataGridTextColumn Header="{Binding LVL}" Binding="{Binding AdminLVL}"/>
+						<DataGridTemplateColumn Header="{Binding LVL}">
+							<DataGridTemplateColumn.CellTemplate>
+								<DataTemplate DataType="model:User">
+									<TextBlock Text="{Binding Admin, StringFormat='{}{0}'}"
+											   VerticalAlignment="Center" HorizontalAlignment="Center" />
+								</DataTemplate>
+							</DataGridTemplateColumn.CellTemplate>
+							<DataGridTemplateColumn.CellEditingTemplate>
+								<DataTemplate DataType="model:User">
+									<TextBox Text="{Binding Admin, StringFormat='{}{0}'}"
+											   VerticalAlignment="Center" HorizontalAlignment="Center" />
+								</DataTemplate>
+							</DataGridTemplateColumn.CellEditingTemplate>
+						</DataGridTemplateColumn>
 						<DataGridTextColumn Header="{Binding Last}" Binding="{Binding LastTime}"/>
 					</DataGrid.Columns>
 				</DataGrid>

@@ -93,9 +93,7 @@ public partial class Auth : Window
                 break;
         }
 
-        // Парсим JSON строку в объект JObject
         JObject jsonObject = JObject.Parse(responseBody);
-        // Извлекаем значение токена
         string token = jsonObject["token"].ToString();
         int admin = (int)jsonObject["admin"];
         RequestManager requestManager = new RequestManager(token);
@@ -113,4 +111,4 @@ public partial class Auth : Window
         AuthButton.IsEnabled = true;
         this.Close();
     }
-    }
+}
